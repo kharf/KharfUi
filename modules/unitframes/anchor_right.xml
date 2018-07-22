@@ -1,0 +1,21 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="UnitFramesAnchorRight" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="false">
+            <Dimensions x="30" y="5" />
+            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="900" offsetY="507.5"/>
+            <Controls>
+                <Control name="$(parent)Control">
+                    <Dimensions x="30" y="4" />
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                    <Controls>
+                        <Backdrop name="$(parent)Border" edgeColor="1a1a1a" layer="0" level="1" centerColor="989898" alpha="1" hidden="false">
+                            <Dimensions x="30" y="4" />
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                            <Edge edgeSize="1" />
+                        </Backdrop>
+                    </Controls>
+                </Control>
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>

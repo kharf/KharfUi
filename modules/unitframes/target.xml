@@ -1,0 +1,42 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="UnitFramesTarget" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="true">
+            <Dimensions x="300" y="50" />
+            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="210" offsetY="370"/>
+            <Controls>
+                <!-- HEALTH BAR -->
+                <Control name="$(parent)Health">
+                    <Dimensions x="300" y="40" />
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                    <Controls>
+                        <Backdrop name="$(parent)Backdrop" edgeColor="1a1a1a" centerColor="1a1a1a" alpha="1" layer="0" level="0">
+                            <Dimensions x="300" y="40" />
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                            <Edge edgeSize="0" />
+                        </Backdrop>
+
+                        <StatusBar name="$(parent)Bar" color="8f8f8f" alpha="1" layer="0" level="1">
+                            <Dimensions x="300" y="40" />
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+                            <Limits min="0" max="100" />
+                        </StatusBar>
+
+                        <Label name="$(parent)ValueLabel" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="10"/>
+                        </Label>
+
+                        <Label name="$(parent)ShieldValueLabel" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="240"/>
+                        </Label>
+
+                        <Backdrop name="$(parent)Border" edgeColor="000000" layer="0" level="2" centerColor="00000000" alpha="1" hidden="false">
+                            <Dimensions x="300" y="40" />
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                            <Edge edgeSize="1" />
+                        </Backdrop>
+                    </Controls>
+                </Control>
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>
