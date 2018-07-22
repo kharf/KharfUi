@@ -170,8 +170,12 @@ function TTUI.InitUnitPower(unitTag)
     )
     if shield == nil then
       powertype_controls.reticleover["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
+      local backToHealthColor = ZO_ColorDef:New("933f3f")
+      powertype_controls.reticleover["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
     else
       powertype_controls.reticleover["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", shield))
+      local shieldColor = ZO_ColorDef:New("8f8f8f")
+      powertype_controls.reticleover["HEALTH_BAR"]:SetColor(shieldColor:UnpackRGBA())
     end
 
     powertype_controls.reticleover["HEALTH_BAR"]:SetMinMax(0, maxHealth)
