@@ -29,6 +29,7 @@ end
 function TTUI:InitializeControls()
   powertype_controls = {}
   powertype_controls.player = {
+    ["HEALTH_SHIELD_CURRENT_LABEL"] = UnitFramesPlayerHealthShieldValueLabel,
     ["HEALTH_CURRENT_LABEL"] = UnitFramesPlayerHealthValueLabel,
     ["HEALTH_BAR"] = UnitFramesPlayerHealthBar,
     ["MAGICKA_CURRENT_LABEL"] = UnitFramesPlayerMagickaValueLabel,
@@ -37,12 +38,17 @@ function TTUI:InitializeControls()
     ["STAMINA_BAR"] = UnitFramesPlayerStaminaBar
   }
   powertype_controls.reticleover = {
+    ["HEALTH_SHIELD_CURRENT_LABEL"] = UnitFramesTargetHealthShieldValueLabel,
     ["HEALTH_CURRENT_LABEL"] = UnitFramesTargetHealthValueLabel,
     ["HEALTH_BAR"] = UnitFramesTargetHealthBar
   }
 end
 
 function TTUI.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax)
+  if powertype_controls == nil then
+    return
+  end
+
   if unitTag == "player" then
     powerControl = powertype_controls.player
     if powerType == POWERTYPE_MAGICKA then
@@ -69,10 +75,14 @@ end
 function TTUI.OnVisualAdded(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue)
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      local shieldColor = ZO_ColorDef:New("8f8f8f")
-      UnitFramesPlayerHealthBar:SetColor(shieldColor:UnpackRGBA())
-      UnitFramesPlayerHealthShieldValueLabel:SetText(string.format("(%6d)", value))
+      powerControl = powertype_controls.player
     end
+    if unitTag == "reticleover" then
+      powerControl = powertype_controls.reticleover
+    end
+    local shieldColor = ZO_ColorDef:New("8f8f8f")
+    powerControl["HEALTH_BAR"]:SetColor(shieldColor:UnpackRGBA())
+    powerControl["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
   end
 end
 
@@ -87,8 +97,12 @@ function TTUI.OnVisualUpdated(
   maxValue)
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      UnitFramesPlayerHealthShieldValueLabel:SetText(string.format("(%6d)", value))
+      powerControl = powertype_controls.player
     end
+    if unitTag == "reticleover" then
+      powerControl = powertype_controls.reticleover
+    end
+    powerControl["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
   end
 end
 
@@ -103,10 +117,15 @@ function TTUI.OnVisualRemoved(
   maxValue)
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      local backToHealthColor = ZO_ColorDef:New("a25d7c")
-      UnitFramesPlayerHealthBar:SetColor(backToHealthColor:UnpackRGBA())
-      UnitFramesPlayerHealthShieldValueLabel:SetText("")
+      powerControl = powertype_controls.player
+      backToHealthColor = ZO_ColorDef:New("a25d7c")
     end
+    if unitTag == "reticleover" then
+      powerControl = powertype_controls.reticleover
+      backToHealthColor = ZO_ColorDef:New("933f3f")
+    end
+    powerControl["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+    powerControl["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
   end
 end
 
