@@ -50,24 +50,25 @@ function TTUI.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, powerValu
   end
 
   if unitTag == "player" then
-    powerControl = powertype_controls.player
+    if powerType == POWERTYPE_HEALTH then
+      powertype_controls.player["HEALTH_BAR"]:SetMinMax(0, powerEffectiveMax)
+      powertype_controls.player["HEALTH_BAR"]:SetValue(powerValue)
+      TTUI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
+    end
     if powerType == POWERTYPE_MAGICKA then
-      powerControl["MAGICKA_BAR"]:SetMinMax(0, powerEffectiveMax)
-      powerControl["MAGICKA_BAR"]:SetValue(powerValue)
+      powertype_controls.player["MAGICKA_BAR"]:SetMinMax(0, powerEffectiveMax)
+      powertype_controls.player["MAGICKA_BAR"]:SetValue(powerValue)
       TTUI.SetPowerStatusValue(unitTag, "MAGICKA", powerValue, powerEffectiveMax)
     end
     if powerType == POWERTYPE_STAMINA then
-      powerControl["STAMINA_BAR"]:SetMinMax(0, powerEffectiveMax)
-      powerControl["STAMINA_BAR"]:SetValue(powerValue)
+      powertype_controls.player["STAMINA_BAR"]:SetMinMax(0, powerEffectiveMax)
+      powertype_controls.player["STAMINA_BAR"]:SetValue(powerValue)
       TTUI.SetPowerStatusValue(unitTag, "STAMINA", powerValue, powerEffectiveMax)
     end
   end
   if unitTag == "reticleover" then
-    powerControl = powertype_controls.reticleover
-  end
-  if powerType == POWERTYPE_HEALTH then
-    powerControl["HEALTH_BAR"]:SetMinMax(0, powerEffectiveMax)
-    powerControl["HEALTH_BAR"]:SetValue(powerValue)
+    powertype_controls.reticleover["HEALTH_BAR"]:SetMinMax(0, powerEffectiveMax)
+    powertype_controls.reticleover["HEALTH_BAR"]:SetValue(powerValue)
     TTUI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
   end
 end
@@ -75,14 +76,15 @@ end
 function TTUI.OnVisualAdded(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue)
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      powerControl = powertype_controls.player
+      local shieldColor = ZO_ColorDef:New("8f8f8f")
+      powertype_controls.player["HEALTH_BAR"]:SetColor(shieldColor:UnpackRGBA())
+      powertype_controls.player["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
     end
     if unitTag == "reticleover" then
-      powerControl = powertype_controls.reticleover
+      local shieldColor = ZO_ColorDef:New("8f8f8f")
+      powertype_controls.reticleover["HEALTH_BAR"]:SetColor(shieldColor:UnpackRGBA())
+      powertype_controls.reticleover["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
     end
-    local shieldColor = ZO_ColorDef:New("8f8f8f")
-    powerControl["HEALTH_BAR"]:SetColor(shieldColor:UnpackRGBA())
-    powerControl["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
   end
 end
 
@@ -97,12 +99,11 @@ function TTUI.OnVisualUpdated(
   maxValue)
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      powerControl = powertype_controls.player
+      powertype_controls.player["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
     end
     if unitTag == "reticleover" then
-      powerControl = powertype_controls.reticleover
+      powertype_controls.reticleover["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
     end
-    powerControl["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", value))
   end
 end
 
@@ -117,15 +118,15 @@ function TTUI.OnVisualRemoved(
   maxValue)
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      powerControl = powertype_controls.player
-      backToHealthColor = ZO_ColorDef:New("a25d7c")
+      local backToHealthColor = ZO_ColorDef:New("a25d7c")
+      powertype_controls.player["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+      powertype_controls.player["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
     end
     if unitTag == "reticleover" then
-      powerControl = powertype_controls.reticleover
-      backToHealthColor = ZO_ColorDef:New("933f3f")
+      local backToHealthColor = ZO_ColorDef:New("933f3f")
+      powertype_controls.reticleover["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+      powertype_controls.reticleover["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
     end
-    powerControl["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
-    powerControl["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
   end
 end
 
@@ -134,8 +135,6 @@ function TTUI.OnTargetChanged(eventCode)
     UnitFramesTarget:SetHidden(false)
     TTUI.InitUnitPower("reticleover")
   else
-    if IsUnitDead("reticleover") then
-    end
     UnitFramesTarget:SetHidden(true)
   end
 end
@@ -148,33 +147,45 @@ function TTUI.InitUnitPower(unitTag)
   local currentMagicka, maxMagicka, effectiveMaxMagicka = GetUnitPower(unitTag, POWERTYPE_MAGICKA)
   local currentStamina, maxStamina, effectiveMaxStamina = GetUnitPower(unitTag, POWERTYPE_STAMINA)
   if unitTag == "player" then
-    powerControl = powertype_controls.player
+    powertype_controls.player["HEALTH_BAR"]:SetMinMax(0, maxHealth)
+    powertype_controls.player["HEALTH_BAR"]:SetValue(currentHealth)
+    TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
 
-    powerControl["MAGICKA_BAR"]:SetMinMax(0, maxMagicka)
-    powerControl["MAGICKA_BAR"]:SetValue(currentMagicka)
+    powertype_controls.player["MAGICKA_BAR"]:SetMinMax(0, maxMagicka)
+    powertype_controls.player["MAGICKA_BAR"]:SetValue(currentMagicka)
     TTUI.SetPowerStatusValue(unitTag, "MAGICKA", currentMagicka, effectiveMaxMagicka)
 
-    powerControl["STAMINA_BAR"]:SetMinMax(0, maxStamina)
-    powerControl["STAMINA_BAR"]:SetValue(currentStamina)
+    powertype_controls.player["STAMINA_BAR"]:SetMinMax(0, maxStamina)
+    powertype_controls.player["STAMINA_BAR"]:SetValue(currentStamina)
     TTUI.SetPowerStatusValue(unitTag, "STAMINA", currentStamina, effectiveMaxStamina)
   end
   if unitTag == "reticleover" then
-    powerControl = powertype_controls.reticleover
+    local shield, _ =
+      GetUnitAttributeVisualizerEffectInfo(
+      unitTag,
+      ATTRIBUTE_VISUAL_POWER_SHIELDING,
+      STAT_MITIGATION,
+      ATTRIBUTE_HEALTH,
+      POWERTYPE_HEALTH
+    )
+    if shield == nil then
+      powertype_controls.reticleover["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
+    else
+      powertype_controls.reticleover["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%6d)", shield))
+    end
+
+    powertype_controls.reticleover["HEALTH_BAR"]:SetMinMax(0, maxHealth)
+    powertype_controls.reticleover["HEALTH_BAR"]:SetValue(currentHealth)
+    TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
   end
-  powerControl["HEALTH_BAR"]:SetMinMax(0, maxHealth)
-  powerControl["HEALTH_BAR"]:SetValue(currentHealth)
-  TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
 end
 
 function TTUI.SetPowerStatusValue(unitTag, type, current, effective)
   if unitTag == "player" then
-    powerControl = powertype_controls.player
-    powerControl[type .. "_CURRENT_LABEL"]:SetText(string.format("%6s / %6s", current, effective))
+    powertype_controls.player[type .. "_CURRENT_LABEL"]:SetText(string.format("%6s / %6s", current, effective))
   end
   if unitTag == "reticleover" then
-    if type == "HEALTH" then
-      powertype_controls.reticleover["HEALTH_CURRENT_LABEL"]:SetText(string.format("%6s / %6s", current, effective))
-    end
+    powertype_controls.reticleover[type .. "_CURRENT_LABEL"]:SetText(string.format("%6s / %6s", current, effective))
   end
 end
 
