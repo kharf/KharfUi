@@ -139,7 +139,8 @@ function TTUI.OnTargetChanged(eventCode)
   end
 end
 
-function TTUI.OnDeathStateChanged(eventCode, unitTag, isDead)
+function TTUI.OnPlayerRez(eventCode)
+  TTUI.InitUnitPower("player")
 end
 
 function TTUI.InitUnitPower(unitTag)
@@ -236,5 +237,5 @@ EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, TTU
 EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, TTUI.OnVisualRemoved)
 EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, TTUI.OnVisualUpdated)
 EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_RETICLE_TARGET_CHANGED, TTUI.OnTargetChanged)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_UNIT_DEATH_STATE_CHANGED, TTUI.OnDeathStateChanged)
+EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_PLAYER_ALIVE, TTUI.OnPlayerRez)
 EVENT_MANAGER:RegisterForUpdate(TTUI.name, 1000, TTUI.OnUpdate)
