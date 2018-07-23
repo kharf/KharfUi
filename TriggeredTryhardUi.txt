@@ -11,6 +11,7 @@ TriggeredTryhardUi.xml
 TriggeredTryhardUi.lua
 modules\unitframes\player.xml
 modules\unitframes\target.xml
+modules\unitframes\group.xml
 modules\unitframes\infoblock.xml
 modules\unitframes\infoblock_left.xml
 modules\unitframes\infoblock_right.xml
