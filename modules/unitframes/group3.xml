@@ -1,0 +1,53 @@
+<GuiXml>
+    <Controls>
+        <TopLevelControl name="UnitFramesGroup3" clampedToScreen="true" mouseEnabled="false" movable="false" hidden="true">
+            <Dimensions x="200" y="40" />
+            <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="LEFT" offsetX="20" offsetY="-100"/>
+            <Controls>
+
+                <Label name="$(parent)Name" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="10"/>
+                    <OnInitialized>
+                    UnitFramesGroup3Name:SetHidden(true)
+                    </OnInitialized>
+                </Label>
+
+                <!-- HEALTH BAR -->
+                <Control name="$(parent)Health">
+                    <Dimensions x="200" y="30" />
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                    <Controls>
+                        <Backdrop name="$(parent)Backdrop" edgeColor="1a1a1a" centerColor="1a1a1a" alpha="1" layer="0" level="0">
+                            <Dimensions x="200" y="30" />
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                            <Edge edgeSize="0" />
+                        </Backdrop>
+
+                        <StatusBar name="$(parent)Bar" color="933f3f" alpha="1" layer="0" level="1">
+                            <Dimensions x="200" y="30" />
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
+                            <Limits min="0" max="100" />
+                        </StatusBar>
+
+                        <Label name="$(parent)ValueLabel" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="205"/>
+                        </Label>
+
+                        <Label name="$(parent)ShieldValueLabel" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="240"/>
+                        </Label>
+
+                        <Backdrop name="$(parent)Border" edgeColor="000000" layer="0" level="2" centerColor="00000000" alpha="1" hidden="false">
+                            <Dimensions x="200" y="30" />
+                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT"/>
+                            <Edge edgeSize="1" />
+                        </Backdrop>
+                    </Controls>
+                    <OnInitialized>
+                    UnitFramesGroup3Health:SetHidden(true)
+                    </OnInitialized>
+                </Control>
+            </Controls>
+        </TopLevelControl>
+    </Controls>
+</GuiXml>

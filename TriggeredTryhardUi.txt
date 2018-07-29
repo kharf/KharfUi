@@ -8,10 +8,13 @@ libs\LibStub\LibStub.lua
 libs\LibAddonMenu-2.0\LibAddonMenu-2.0.lua
 
 TriggeredTryhardUi.xml
-TriggeredTryhardUi.lua
 modules\unitframes\player.xml
 modules\unitframes\target.xml
-modules\unitframes\group.xml
+modules\unitframes\group1.xml
+modules\unitframes\group2.xml
+modules\unitframes\group3.xml
+modules\unitframes\group4.xml
 modules\unitframes\infoblock.xml
 modules\unitframes\infoblock_left.xml
 modules\unitframes\infoblock_right.xml
+TriggeredTryhardUi.lua
