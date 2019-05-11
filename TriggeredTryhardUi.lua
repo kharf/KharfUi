@@ -13,7 +13,7 @@ end
 
 function TTUI.OnPlayerLoaded()
   EVENT_MANAGER:UnregisterForEvent(TTUI.name, EVENT_PLAYER_ACTIVATED)
-  CHAT_SYSTEM:AddMessage("TriggeredTryhardUi by @kArvee")
+  CHAT_SYSTEM:AddMessage("TriggeredTryhardUi by @Kharf")
 end
 
 function TTUI.OnUpdate()
@@ -57,6 +57,9 @@ function TTUI.InitializeControls()
     ["STAMINA_BAR"] = UnitFramesPlayerStaminaBar
   }
   powertype_controls["reticleover"] = {
+    ["NAME"] = UnitFramesTargetName,
+    ["DISPLAY_NAME"] = UnitFramesTargetDisplayName,
+    ["RACE_CLASS"] = UnitFramesTargetRaceClass,
     ["HEALTH_SHIELD_CURRENT_LABEL"] = UnitFramesTargetHealthShieldValueLabel,
     ["HEALTH_CURRENT_LABEL"] = UnitFramesTargetHealthValueLabel,
     ["HEALTH_BAR"] = UnitFramesTargetHealthBar
@@ -235,10 +238,21 @@ function TTUI.InitUnitPower(unitTag)
     TTUI.SetPowerStatusValue(unitTag, "STAMINA", currentStamina, effectiveMaxStamina)
   end
   if unitTag == "reticleover" then
+    local unitAlliance = GetUnitAlliance(unitTag)
     if shield == nil then
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
-      local backToHealthColor = ZO_ColorDef:New("933f3f")
-      powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+      if unitAlliance == 1 then
+        local backToHealthColor = ZO_ColorDef:New("b2984a")
+        powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+      end
+      if unitAlliance == 2 then
+        local backToHealthColor = ZO_ColorDef:New("973735")
+        powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+      end
+      if unitAlliance == 3 then
+        local backToHealthColor = ZO_ColorDef:New("587d9f")
+        powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+      end
     else
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%d)", shield))
       local shieldColor = ZO_ColorDef:New("8f8f8f")
@@ -246,22 +260,27 @@ function TTUI.InitUnitPower(unitTag)
     end
     powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, maxHealth)
     powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(currentHealth)
+    powertype_controls[unitTag]["NAME"]:SetText(GetUnitName(unitTag))
+    powertype_controls[unitTag]["DISPLAY_NAME"]:SetText(GetUnitDisplayName(unitTag))
+    powertype_controls[unitTag]["RACE_CLASS"]:SetText(string.format("%s %s", GetUnitRace(unitTag), GetUnitClass(unitTag)))
     TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
   end
   if unitTag == "group1" or unitTag == "group2" or unitTag == "group3" or unitTag == "group4" then
     TTUI.SetHidden(unitTag, false)
     if IsUnitOnline(unitTag) then
       powertype_controls[unitTag]["NAME"]:SetText(GetUnitName(unitTag))
+      if shield == nil then
+        local backToHealthColor = ZO_ColorDef:New("933f3f")
+        powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
+      else
+        powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%d)", shield))
+        local shieldColor = ZO_ColorDef:New("8f8f8f")
+        powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(shieldColor:UnpackRGBA())
+      end
     else
       powertype_controls[unitTag]["NAME"]:SetText(GetUnitName(unitTag) .. " - offline")
-    end
-    if shield == nil then
-      local backToHealthColor = ZO_ColorDef:New("933f3f")
-      powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
-    else
-      powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%d)", shield))
-      local shieldColor = ZO_ColorDef:New("8f8f8f")
-      powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(shieldColor:UnpackRGBA())
+      local offlineColor = ZO_ColorDef:New("1a1a1a")
+      powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(offlineColor:UnpackRGBA())
     end
     powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, maxHealth)
     powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(currentHealth)
@@ -307,7 +326,7 @@ function TTUI.HideControls()
   EVENT_MANAGER:UnregisterForUpdate("ZO_PlayerAttributeMountStamina")
   ZO_PlayerAttributeMountStamina:SetHidden(true)
 
-  ZO_TargetUnitFramereticleover:SetHidden(true)
+ --[[  ZO_TargetUnitFramereticleover:SetHidden(true)
   ZO_TargetUnitFramereticleoverBarLeft:SetHidden(true)
   ZO_TargetUnitFramereticleoverBarLeftGloss:SetHidden(true)
   ZO_TargetUnitFramereticleoverBarRight:SetHidden(true)
@@ -316,6 +335,7 @@ function TTUI.HideControls()
   ZO_TargetUnitFramereticleoverBgContainerBgCenter:SetHidden(true)
   ZO_TargetUnitFramereticleoverBgContainerBgLeft:SetHidden(true)
   ZO_TargetUnitFramereticleoverBgContainerBgRight:SetHidden(true)
+  ZO_TargetUnitFramereticleoverCaption:SetHidden(true)
   ZO_TargetUnitFramereticleoverFrameCenter:SetHidden(true)
   ZO_TargetUnitFramereticleoverFrameCenterBottomMunge:SetHidden(true)
   ZO_TargetUnitFramereticleoverFrameCenterTopMunge:SetHidden(true)
@@ -331,8 +351,8 @@ function TTUI.HideControls()
   ZO_TargetUnitFramereticleoverRightBracketGlow:SetHidden(true)
   ZO_TargetUnitFramereticleoverRightBracketUnderlay:SetHidden(true)
   ZO_TargetUnitFramereticleoverTextArea:SetHidden(true)
-  ZO_TargetUnitFramereticleoverWarner:SetHidden(true)
-  TTUI.HideCompass(true)
+  ZO_TargetUnitFramereticleoverWarner:SetHidden(true) ]]
+  --TTUI.HideCompass(true)
 end
 
 function TTUI.HideCompass(hide)

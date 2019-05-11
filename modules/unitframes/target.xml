@@ -4,6 +4,17 @@
             <Dimensions x="300" y="50" />
             <Anchor point="TOPLEFT" relativeTo="GuiRoot" relativePoint="CENTER" offsetX="210" offsetY="370"/>
             <Controls>
+
+                <Label name="$(parent)Name" text="1" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                    <Anchor point="BOTTOMLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" offsetX="10" offsetY="-10"/>
+                </Label>
+                <Label name="$(parent)DisplayName" text="1" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                    <Anchor point="BOTTOMLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" offsetX="10" offsetY="10"/>
+                </Label>
+                <Label name="$(parent)RaceClass" text="1" font="ZoFontWinH4" color="ffffff" scale="0.8">
+                    <Anchor point="BOTTOMLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" offsetX="10" offsetY="30"/>
+                </Label>
+
                 <!-- HEALTH BAR -->
                 <Control name="$(parent)Health">
                     <Dimensions x="300" y="40" />
