@@ -1,6 +1,21 @@
 TTUI = {}
 TTUI.name = "TriggeredTryhardUi"
 
+local classIcons = {
+	[1] = [[/esoui/art/icons/class/class_dragonknight.dds]],
+	[2] = [[/esoui/art/icons/class/class_sorcerer.dds]],
+	[3] = [[/esoui/art/icons/class/class_nightblade.dds]],
+	[4] = [[/esoui/art/icons/class/class_warden.dds]],
+	[6] = [[/esoui/art/icons/class/class_templar.dds]],
+}
+
+local allianceIcons = {
+	[100] = [[/esoui/art/ava/ava_allianceflag_neutral.dds]],
+	[1] = [[/esoui/art/guild/guildbanner_icon_aldmeri.dds]],
+	[2] = [[/esoui/art/guild/guildbanner_icon_ebonheart.dds]],
+	[3] = [[/esoui/art/guild/guildbanner_icon_daggerfall.dds]],
+}
+
 function TTUI.OnAddOnLoaded(event, addonName)
   if addonName == TTUI.name then
     TTUI.InitializeControls()
@@ -57,9 +72,11 @@ function TTUI.InitializeControls()
     ["STAMINA_BAR"] = UnitFramesPlayerStaminaBar
   }
   powertype_controls["reticleover"] = {
-    ["NAME"] = UnitFramesTargetName,
-    ["DISPLAY_NAME"] = UnitFramesTargetDisplayName,
-    ["RACE_CLASS"] = UnitFramesTargetRaceClass,
+    ["RANK"] = UnitFramesTargetRank,
+    ["NAME"] = UnitFramesTargetInfoName,
+    ["CLASS_ICON"] = UnitFramesTargetClassIcon,
+    ["CHAMPION_ICON"] = UnitFramesTargetChampionIcon,
+    ["RACE"] = UnitFramesTargetRace,
     ["HEALTH_SHIELD_CURRENT_LABEL"] = UnitFramesTargetHealthShieldValueLabel,
     ["HEALTH_CURRENT_LABEL"] = UnitFramesTargetHealthValueLabel,
     ["HEALTH_BAR"] = UnitFramesTargetHealthBar
@@ -260,9 +277,26 @@ function TTUI.InitUnitPower(unitTag)
     end
     powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, maxHealth)
     powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(currentHealth)
+    local cp = GetUnitChampionPoints(unitTag)
     powertype_controls[unitTag]["NAME"]:SetText(GetUnitName(unitTag))
-    powertype_controls[unitTag]["DISPLAY_NAME"]:SetText(GetUnitDisplayName(unitTag))
-    powertype_controls[unitTag]["RACE_CLASS"]:SetText(string.format("%s %s", GetUnitRace(unitTag), GetUnitClass(unitTag)))
+    --powertype_controls[unitTag]["DISPLAY_NAME"]:SetText(GetUnitDisplayName(unitTag))
+    powertype_controls[unitTag]["RACE"]:SetText(GetUnitRace(unitTag))
+    if IsUnitPlayer(unitTag) then
+      powertype_controls[unitTag]["CLASS_ICON"]:SetTexture(classIcons[GetUnitClassId(unitTag)])
+      powertype_controls[unitTag]["CLASS_ICON"]:SetHidden(false)
+      powertype_controls[unitTag]["RANK"]:SetHidden(false)
+      if IsUnitChampion(unitTag) then
+        powertype_controls[unitTag]["RANK"]:SetText(cp)
+        powertype_controls[unitTag]["CHAMPION_ICON"]:SetHidden(false)
+      else
+        powertype_controls[unitTag]["RANK"]:SetText(GetUnitLevel(unitTag))
+        powertype_controls[unitTag]["CHAMPION_ICON"]:SetHidden(true)
+      end
+    else 
+      powertype_controls[unitTag]["CLASS_ICON"]:SetHidden(true)
+      powertype_controls[unitTag]["RANK"]:SetHidden(true)
+      powertype_controls[unitTag]["CHAMPION_ICON"]:SetHidden(true)
+    end
     TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
   end
   if unitTag == "group1" or unitTag == "group2" or unitTag == "group3" or unitTag == "group4" then
