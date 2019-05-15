@@ -10,7 +10,7 @@
                     <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="10" offsetY="-20"/>
                 </Texture>
                 <Label name="$(parent)Race" text="" font="ZoFontWinH4" color="ffffff" scale="0.8">
-                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="30" offsetY="-20"/>
+                    <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="40" offsetY="-20"/>
                 </Label>
                 <Label name="$(parent)Rank" text="1" font="ZoFontWinH4" color="ffffff" scale="0.8">
                     <Anchor point="TOPRIGHT" relativeTo="$(parent)" relativePoint="TOPRIGHT" offsetX="-5" offsetY="-20"/>
@@ -42,7 +42,7 @@
                         </Label>
 
                         <Label name="$(parent)ShieldValueLabel" font="ZoFontWinH4" color="ffffff" scale="0.8">
-                            <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="240"/>
+                            <Anchor point="TOPRIGHT" relativeTo="$(parent)" relativePoint="TOPRIGHT" offsetX="-10"/>
                         </Label>
 
                         <Backdrop name="$(parent)Border" edgeColor="000000" layer="0" level="2" centerColor="00000000" alpha="1" hidden="false">
