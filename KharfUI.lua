@@ -32,8 +32,21 @@ function UI.OnPlayerLoaded()
 end
 
 function UI.OnUpdate()
-  UnitFramesInfoRightBlockFPSLabel:SetText(string.format("%d fps & %s ms", GetFramerate(), GetLatency()))
+  local framerate = GetFramerate()
+  local ping = GetLatency()
+  UnitFramesInfoRightBlockFPSLabel:SetText(string.format("%d fps & %s ms", framerate, ping))
   UnitFramesInfoRightBlockTimeLabel:SetText(string.format("%s", GetTimeString()))
+  if framerate > 30 and ping < 200  then
+    local color = ZO_ColorDef:New("387039")
+    UnitFramesInfoRightBlockFPSLabel:SetColor(color:UnpackRGBA())
+  else
+    local color = ZO_ColorDef:New("933f3f")
+    UnitFramesInfoRightBlockFPSLabel:SetColor(color:UnpackRGBA())
+  end
+  local currencyType = CURT_MONEY
+  local formatType = ZO_CURRENCY_FORMAT_AMOUNT_ICON
+  local currencyString = zo_strformat(SI_NUMBER_FORMAT, ZO_Currency_FormatKeyboard(currencyType,  GetCurrentMoney(), formatType))
+  UnitFramesInfoRightBlockGoldLabel:SetText(string.format("%s",currencyString))
 end
 
 function UI.Initialize()
