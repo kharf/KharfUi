@@ -189,7 +189,7 @@ function UI.OnVisualRemoved(
   end
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      local backToHealthColor = ZO_ColorDef:New("353535")
+      local backToHealthColor = ZO_ColorDef:New("933f3f")
       powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
     end
@@ -235,7 +235,7 @@ function UI.InitUnitPower(unitTag)
   if unitTag == "player" then
     if shield == nil then
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
-      local backToHealthColor = ZO_ColorDef:New("353535")
+      local backToHealthColor = ZO_ColorDef:New("933f3f")
       powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
     else
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%d)", shield))

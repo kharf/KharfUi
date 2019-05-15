@@ -23,7 +23,7 @@
                             <Edge edgeSize="0" />
                         </Backdrop>
 
-                        <StatusBar name="$(parent)Bar" color="933f3f" alpha="1" layer="0" level="1">
+                        <StatusBar name="$(parent)Bar" color="933f3f" alpha="1" layer="0" level="1" textureFile="KharfUI/modules/unitframes/bar.dds">
                             <Dimensions x="200" y="30" />
                             <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
                             <Limits min="0" max="100" />
