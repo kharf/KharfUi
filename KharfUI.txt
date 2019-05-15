@@ -1,13 +1,13 @@
-﻿## Title: TTUI
+﻿## Title: KharfUI
 ## APIVersion: 100026
 ## OptionalDependsOn: LibStub LibAddonMenu-2.0
-## SavedVariables: TTUiSavedVariables
+## SavedVariables: KharfUISavedVariables
 
 libs\LibStub\LibStub.lua
 
 libs\LibAddonMenu-2.0\LibAddonMenu-2.0.lua
 
-TriggeredTryhardUi.xml
+KharfUI.xml
 modules\unitframes\player.xml
 modules\unitframes\target.xml
 modules\unitframes\group1.xml
@@ -17,4 +17,4 @@ modules\unitframes\group4.xml
 modules\unitframes\infoblock.xml
 modules\unitframes\infoblock_left.xml
 modules\unitframes\infoblock_right.xml
-TriggeredTryhardUi.lua
+KharfUI.lua

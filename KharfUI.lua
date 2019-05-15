@@ -1,5 +1,5 @@
-TTUI = {}
-TTUI.name = "TriggeredTryhardUi"
+UI = {}
+UI.name = "KharfUI"
 
 local classIcons = {
 	[1] = [[/esoui/art/icons/class/class_dragonknight.dds]],
@@ -16,43 +16,43 @@ local allianceIcons = {
 	[3] = [[/esoui/art/guild/guildbanner_icon_daggerfall.dds]],
 }
 
-function TTUI.OnAddOnLoaded(event, addonName)
-  if addonName == TTUI.name then
-    TTUI.InitializeControls()
-    TTUI.HideControls()
-    TTUI.AddUiAsFragment()
-    TTUI.Initialize()
-    EVENT_MANAGER:UnregisterForEvent(TTUI.name, EVENT_ADD_ON_LOADED)
+function UI.OnAddOnLoaded(event, addonName)
+  if addonName == UI.name then
+    UI.InitializeControls()
+    UI.HideControls()
+    UI.AddUiAsFragment()
+    UI.Initialize()
+    EVENT_MANAGER:UnregisterForEvent(UI.name, EVENT_ADD_ON_LOADED)
   end
 end
 
-function TTUI.OnPlayerLoaded()
-  EVENT_MANAGER:UnregisterForEvent(TTUI.name, EVENT_PLAYER_ACTIVATED)
-  CHAT_SYSTEM:AddMessage("TriggeredTryhardUi by @Kharf")
+function UI.OnPlayerLoaded()
+  EVENT_MANAGER:UnregisterForEvent(UI.name, EVENT_PLAYER_ACTIVATED)
+  CHAT_SYSTEM:AddMessage("KharfUI by @Kharf")
 end
 
-function TTUI.OnUpdate()
+function UI.OnUpdate()
   UnitFramesInfoRightBlockFPSLabel:SetText(string.format("%d fps & %s ms", GetFramerate(), GetLatency()))
   UnitFramesInfoRightBlockTimeLabel:SetText(string.format("%s", GetTimeString()))
 end
 
-function TTUI.Initialize()
-  TTUI.InitUnitPower("player")
-  TTUI.InitializeGroup()
+function UI.Initialize()
+  UI.InitUnitPower("player")
+  UI.InitializeGroup()
 end
 
-function TTUI.InitializeGroup()
+function UI.InitializeGroup()
   for i = 1, 4 do
     unitTag = "group" .. i
     if DoesUnitExist(unitTag) then
-      TTUI.InitUnitPower(unitTag)
+      UI.InitUnitPower(unitTag)
     else
-      TTUI.SetHidden(unitTag, true)
+      UI.SetHidden(unitTag, true)
     end
   end
 end
 
-function TTUI.InitializeControls()
+function UI.InitializeControls()
   unitFrames = {
     ["player"] = UnitFramesPlayer,
     ["reticleover"] = UnitFramesTarget,
@@ -97,7 +97,7 @@ function TTUI.InitializeControls()
   end
 end
 
-function TTUI.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax)
+function UI.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, powerValue, powerMax, powerEffectiveMax)
   if powertype_controls == nil then
     return
   end
@@ -106,32 +106,32 @@ function TTUI.OnPowerUpdate(eventCode, unitTag, powerIndex, powerType, powerValu
     if powerType == POWERTYPE_HEALTH then
       powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, powerEffectiveMax)
       powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(powerValue)
-      TTUI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
+      UI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
     end
     if powerType == POWERTYPE_MAGICKA then
       powertype_controls[unitTag]["MAGICKA_BAR"]:SetMinMax(0, powerEffectiveMax)
       powertype_controls[unitTag]["MAGICKA_BAR"]:SetValue(powerValue)
-      TTUI.SetPowerStatusValue(unitTag, "MAGICKA", powerValue, powerEffectiveMax)
+      UI.SetPowerStatusValue(unitTag, "MAGICKA", powerValue, powerEffectiveMax)
     end
     if powerType == POWERTYPE_STAMINA then
       powertype_controls[unitTag]["STAMINA_BAR"]:SetMinMax(0, powerEffectiveMax)
       powertype_controls[unitTag]["STAMINA_BAR"]:SetValue(powerValue)
-      TTUI.SetPowerStatusValue(unitTag, "STAMINA", powerValue, powerEffectiveMax)
+      UI.SetPowerStatusValue(unitTag, "STAMINA", powerValue, powerEffectiveMax)
     end
   end
   if unitTag == "reticleover" then
     powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, powerEffectiveMax)
     powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(powerValue)
-    TTUI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
+    UI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
   end
   if unitTag == "group1" or unitTag == "group2" or unitTag == "group3" or unitTag == "group4" then
     powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, powerEffectiveMax)
     powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(powerValue)
-    TTUI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
+    UI.SetPowerStatusValue(unitTag, "HEALTH", powerValue, powerEffectiveMax)
   end
 end
 
-function TTUI.OnVisualAdded(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue)
+function UI.OnVisualAdded(eventCode, unitTag, unitAttributeVisual, statType, attributeType, powerType, value, maxValue)
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
       local shieldColor = ZO_ColorDef:New("8f8f8f")
@@ -151,7 +151,7 @@ function TTUI.OnVisualAdded(eventCode, unitTag, unitAttributeVisual, statType, a
   end
 end
 
-function TTUI.OnVisualUpdated(
+function UI.OnVisualUpdated(
   eventCode,
   unitTag,
   unitAttributeVisual,
@@ -175,7 +175,7 @@ function TTUI.OnVisualUpdated(
   end
 end
 
-function TTUI.OnVisualRemoved(
+function UI.OnVisualRemoved(
   eventCode,
   unitTag,
   unitAttributeVisual,
@@ -189,7 +189,7 @@ function TTUI.OnVisualRemoved(
   end
   if unitAttributeVisual == ATTRIBUTE_VISUAL_POWER_SHIELDING then
     if unitTag == "player" then
-      local backToHealthColor = ZO_ColorDef:New("933f3f")
+      local backToHealthColor = ZO_ColorDef:New("353535")
       powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
     end
@@ -206,21 +206,21 @@ function TTUI.OnVisualRemoved(
   end
 end
 
-function TTUI.OnTargetChanged(eventCode)
+function UI.OnTargetChanged(eventCode)
   if DoesUnitExist("reticleover") then
     unitFrames["reticleover"]:SetHidden(false)
-    TTUI.InitUnitPower("reticleover")
+    UI.InitUnitPower("reticleover")
   else
     unitFrames["reticleover"]:SetHidden(true)
   end
 end
 
-function TTUI.OnPlayerRez(eventCode)
-  TTUI.InitUnitPower("player")
-  TTUI.InitializeGroup()
+function UI.OnPlayerRez(eventCode)
+  UI.InitUnitPower("player")
+  UI.InitializeGroup()
 end
 
-function TTUI.InitUnitPower(unitTag)
+function UI.InitUnitPower(unitTag)
   local currentHealth, maxHealth, effectiveMaxHealth = GetUnitPower(unitTag, POWERTYPE_HEALTH)
   local currentMagicka, maxMagicka, effectiveMaxMagicka = GetUnitPower(unitTag, POWERTYPE_MAGICKA)
   local currentStamina, maxStamina, effectiveMaxStamina = GetUnitPower(unitTag, POWERTYPE_STAMINA)
@@ -235,7 +235,7 @@ function TTUI.InitUnitPower(unitTag)
   if unitTag == "player" then
     if shield == nil then
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText("")
-      local backToHealthColor = ZO_ColorDef:New("933f3f")
+      local backToHealthColor = ZO_ColorDef:New("353535")
       powertype_controls[unitTag]["HEALTH_BAR"]:SetColor(backToHealthColor:UnpackRGBA())
     else
       powertype_controls[unitTag]["HEALTH_SHIELD_CURRENT_LABEL"]:SetText(string.format("(%d)", shield))
@@ -244,15 +244,15 @@ function TTUI.InitUnitPower(unitTag)
     end
     powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, maxHealth)
     powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(currentHealth)
-    TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
+    UI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
 
     powertype_controls[unitTag]["MAGICKA_BAR"]:SetMinMax(0, maxMagicka)
     powertype_controls[unitTag]["MAGICKA_BAR"]:SetValue(currentMagicka)
-    TTUI.SetPowerStatusValue(unitTag, "MAGICKA", currentMagicka, effectiveMaxMagicka)
+    UI.SetPowerStatusValue(unitTag, "MAGICKA", currentMagicka, effectiveMaxMagicka)
 
     powertype_controls[unitTag]["STAMINA_BAR"]:SetMinMax(0, maxStamina)
     powertype_controls[unitTag]["STAMINA_BAR"]:SetValue(currentStamina)
-    TTUI.SetPowerStatusValue(unitTag, "STAMINA", currentStamina, effectiveMaxStamina)
+    UI.SetPowerStatusValue(unitTag, "STAMINA", currentStamina, effectiveMaxStamina)
   end
   if unitTag == "reticleover" then
     local unitAlliance = GetUnitAlliance(unitTag)
@@ -297,10 +297,10 @@ function TTUI.InitUnitPower(unitTag)
       powertype_controls[unitTag]["RANK"]:SetHidden(true)
       powertype_controls[unitTag]["CHAMPION_ICON"]:SetHidden(true)
     end
-    TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
+    UI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
   end
   if unitTag == "group1" or unitTag == "group2" or unitTag == "group3" or unitTag == "group4" then
-    TTUI.SetHidden(unitTag, false)
+    UI.SetHidden(unitTag, false)
     if IsUnitOnline(unitTag) then
       powertype_controls[unitTag]["NAME"]:SetText(GetUnitName(unitTag))
       if shield == nil then
@@ -318,11 +318,11 @@ function TTUI.InitUnitPower(unitTag)
     end
     powertype_controls[unitTag]["HEALTH_BAR"]:SetMinMax(0, maxHealth)
     powertype_controls[unitTag]["HEALTH_BAR"]:SetValue(currentHealth)
-    TTUI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
+    UI.SetPowerStatusValue(unitTag, "HEALTH", currentHealth, effectiveMaxHealth)
   end
 end
 
-function TTUI.SetPowerStatusValue(unitTag, type, current, effective)
+function UI.SetPowerStatusValue(unitTag, type, current, effective)
   if unitTag == "player" then
     powertype_controls[unitTag][type .. "_CURRENT_LABEL"]:SetText(string.format("%s / %s", current, effective))
   end
@@ -334,7 +334,7 @@ function TTUI.SetPowerStatusValue(unitTag, type, current, effective)
   end
 end
 
-function TTUI.HideControls()
+function UI.HideControls()
   ZO_UnitFramesGroups:SetHidden(true)
   ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_POWER_UPDATE)
   ZO_PlayerAttributeMagicka:UnregisterForEvent(EVENT_INTERFACE_SETTING_CHANGED)
@@ -386,10 +386,10 @@ function TTUI.HideControls()
   ZO_TargetUnitFramereticleoverRightBracketUnderlay:SetHidden(true)
   ZO_TargetUnitFramereticleoverTextArea:SetHidden(true)
   ZO_TargetUnitFramereticleoverWarner:SetHidden(true) ]]
-  --TTUI.HideCompass(true)
+  --UI.HideCompass(true)
 end
 
-function TTUI.HideCompass(hide)
+function UI.HideCompass(hide)
   -- frame
   lCompassFrame = COMPASS_FRAME.control
   if lCompassFrame then
@@ -415,7 +415,7 @@ function TTUI.HideCompass(hide)
   end
 end
 
-function TTUI.AddUiAsFragment()
+function UI.AddUiAsFragment()
   for key, value in pairs(unitFrames) do
     local fragment = ZO_FadeSceneFragment:New(value)
     SCENE_MANAGER:GetScene("hud"):AddFragment(fragment)
@@ -423,32 +423,32 @@ function TTUI.AddUiAsFragment()
   end
 end
 
-function TTUI.SetHidden(unitTag, value)
+function UI.SetHidden(unitTag, value)
   powertype_controls[unitTag]["HEALTH"]:SetHidden(value)
   powertype_controls[unitTag]["NAME"]:SetHidden(value)
 end
 
-function TTUI.OnGroupMemberJoined(eventCode, name)
-  TTUI.InitializeGroup()
+function UI.OnGroupMemberJoined(eventCode, name)
+  UI.InitializeGroup()
 end
 
-function TTUI.OnGroupMemberLeft(eventCode, name)
-  TTUI.InitializeGroup()
+function UI.OnGroupMemberLeft(eventCode, name)
+  UI.InitializeGroup()
 end
 
-function TTUI.OnGroupMemberConnectionChanged(eventCode, unitTag, isOnline)
-  TTUI.InitializeGroup()
+function UI.OnGroupMemberConnectionChanged(eventCode, unitTag, isOnline)
+  UI.InitializeGroup()
 end
 
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_ADD_ON_LOADED, TTUI.OnAddOnLoaded)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_PLAYER_ACTIVATED, TTUI.OnPlayerLoaded)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_POWER_UPDATE, TTUI.OnPowerUpdate)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, TTUI.OnVisualAdded)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, TTUI.OnVisualRemoved)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, TTUI.OnVisualUpdated)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_RETICLE_TARGET_CHANGED, TTUI.OnTargetChanged)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_PLAYER_ALIVE, TTUI.OnPlayerRez)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_GROUP_MEMBER_JOINED, TTUI.OnGroupMemberJoined)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_GROUP_MEMBER_LEFT, TTUI.OnGroupMemberLeft)
-EVENT_MANAGER:RegisterForEvent(TTUI.name, EVENT_GROUP_MEMBER_CONNECTED_STATUS, TTUI.OnGroupMemberConnectionChanged)
-EVENT_MANAGER:RegisterForUpdate(TTUI.name, 1000, TTUI.OnUpdate)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_ADD_ON_LOADED, UI.OnAddOnLoaded)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_PLAYER_ACTIVATED, UI.OnPlayerLoaded)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_POWER_UPDATE, UI.OnPowerUpdate)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_ADDED, UI.OnVisualAdded)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_REMOVED, UI.OnVisualRemoved)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_UNIT_ATTRIBUTE_VISUAL_UPDATED, UI.OnVisualUpdated)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_RETICLE_TARGET_CHANGED, UI.OnTargetChanged)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_PLAYER_ALIVE, UI.OnPlayerRez)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_GROUP_MEMBER_JOINED, UI.OnGroupMemberJoined)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_GROUP_MEMBER_LEFT, UI.OnGroupMemberLeft)
+EVENT_MANAGER:RegisterForEvent(UI.name, EVENT_GROUP_MEMBER_CONNECTED_STATUS, UI.OnGroupMemberConnectionChanged)
+EVENT_MANAGER:RegisterForUpdate(UI.name, 1000, UI.OnUpdate)

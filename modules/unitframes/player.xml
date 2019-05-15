@@ -15,7 +15,7 @@
                             <Edge edgeSize="0" />
                         </Backdrop>
 
-                        <StatusBar name="$(parent)Bar" color="933f3f" alpha="1" layer="0" level="1">
+                        <StatusBar name="$(parent)Bar" color="353535" alpha="1" layer="0" level="1" textureFile="KharfUI/modules/unitframes/grainy.dds">
                             <Dimensions x="300" y="60" />
                             <Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="TOPLEFT" offsetX="0" offsetY="0"/>
                             <Limits min="0" max="100" />
